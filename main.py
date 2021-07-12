@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 import time
-from tabulate import TableFormat, tabulate
 
 
 
@@ -18,7 +17,7 @@ def clean():
 
 
 
-
+#this fucntion reads the CSV file and returns a list of dictionaries.
 def readFiles():
 
     #reads the CSV for lotto
@@ -44,7 +43,7 @@ def dispProb(data,count):
     probabilities=[]
     
     i=-1
-    while i>=-6:
+    while i>=-10:
         topNumbers.append(list(sortedDics)[i])
         i-=1
             
@@ -59,23 +58,14 @@ def dispProb(data,count):
         'Possibility':probabilities
     }  
         
-    df = pd.DataFrame(probDic, index=['Most Probable Num 1', 'Most Probable Num 2', 'Most Probable Num 3','Most Probable Num 4', 'Most Probable Num 5', 'Most Probable Num 6'])
+    df = pd.DataFrame(probDic, index=['Most Probable Num 1', 'Most Probable Num 2', 'Most Probable Num 3','Most Probable Num 4', 'Most Probable Num 5', 'Most Probable Num 6','Most Probable Num 7','Most Probable Num 8','Most Probable Num 9','Most Probable Num 10'])
 
     print(df)
     print('\n \n')
 
+
 #function for representing presense of each number as a bar graph and a table
 def graphs(numbers):
-
-    tableData=[["Numbers", "Counts"]]
-    for number in numbers:
-        data=[]
-        data.append(number)
-        data.append(numbers[number])
-        tableData.append(data)
-
-    
-    print(tabulate(tableData , tablefmt='fancy_grid'))
 
     numList=list(numbers)
     counts=list(numbers.values())
@@ -87,6 +77,30 @@ def graphs(numbers):
 
     plt.show()
 
+
+def checkNumbers(numbers,count):
+
+    userNumList=[]
+    userProbList=[]
+
+    for i in range(1,7):
+        inputNum=input(f'Please enter your {i}st Number: ').strip()
+        while inputNum in userNumList or inputNum>59:
+            print("The number you entered is not acceptable.")
+            inputNum=input(f'Please enter your {i}st Number again: ').strip()
+        userNumList.append(inputNum)
+
+    for number in userNumList:
+        possibility= round(((numbers[number])/count)*100,2)
+        userProbList.append(possibility)
+
+    probDic={
+        'Number':userNumList,
+        'Possibility':userProbList
+    }  
+
+    df = pd.DataFrame(probDic, index=["The Number:" for i in range(1,len(userNumList)+1) ])
+    print(df)
 
 def main():
     clean()
@@ -168,7 +182,7 @@ def main():
     
     #Asking user how results should be presented
     print("Please select an option.(Type the option number and press enter) \n")
-    print(" 1 - See number counts and most probable numbers.")
+    print(" 1 - See number counts and most possible 10 numbers.")
     print(" 2 - Enter a set of numbers and see the probability of getting them as the winning numbers. \n")
     userChoice=input("Please enter your choice here: ").strip()
     clean()
@@ -176,10 +190,11 @@ def main():
 
     if userChoice=="1":       
         dispProb(numbers,dataCount)
-        
+        graphs(numbers)
 
     else:
-        graphs(numbers)
+        checkNumbers(numbers,dataCount)
+        
 
     
 

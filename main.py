@@ -85,7 +85,7 @@ def checkNumbers(numbers,count):
 
     for i in range(1,7):
         inputNum=input(f'Please enter your {i}st Number: ').strip()
-        while inputNum in userNumList or inputNum>59:
+        while inputNum in userNumList or int(inputNum)>59:
             print("The number you entered is not acceptable.")
             inputNum=input(f'Please enter your {i}st Number again: ').strip()
         userNumList.append(inputNum)
